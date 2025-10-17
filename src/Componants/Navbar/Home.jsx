@@ -1,4 +1,6 @@
 import "./Home.css";
+import { Link } from "react-scroll";
+import { useEffect, useState } from "react";
 import {
   FaGithub,
   FaLinkedin,
@@ -8,12 +10,41 @@ import {
 } from "react-icons/fa";
 
 const Home = () => {
+  const phrases = [
+    "Frontend Developer",
+    "Problem Solver",
+    "Cloud & AWS Enthusiast",
+  ];
+  const [text, setText] = useState("");
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = phrases[phraseIndex % phrases.length];
+    const speed = isDeleting ? 40 : 90;
+    const timeout = setTimeout(() => {
+      const nextLength = isDeleting ? text.length - 1 : text.length + 1;
+      setText(current.slice(0, nextLength));
+      if (!isDeleting && nextLength === current.length) {
+        setIsDeleting(true);
+      } else if (isDeleting && nextLength === 0) {
+        setIsDeleting(false);
+        setPhraseIndex((i) => (i + 1) % phrases.length);
+      }
+    }, text === "" && isDeleting ? 600 : speed);
+    return () => clearTimeout(timeout);
+  }, [text, isDeleting, phraseIndex]);
+
   return (
     <section className="home-section">
       <div className="home-left">
         <h1 className="title">
           I'm <span className="highlight">Sanika</span> Desai
         </h1>
+        <div className="typewriter" aria-label="roles">
+          <span className="typewriter-text">{text}</span>
+          <span className="caret" aria-hidden="true">|</span>
+        </div>
         <p className="description">
           A passionate developer who loves building intuitive web applications
           and solving complex DSA problems. I'm currently exploring the world of
@@ -59,8 +90,26 @@ const Home = () => {
         </div>
 
         <div className="buttons">
-          <button className="btn-primary">My Work</button>
-          <button className="btn-outline">Contact Me</button>
+          <Link
+            to="projects"
+            smooth={true}
+            duration={500}
+            offset={-60}
+            spy={true}
+            className="btn-primary btn-link"
+          >
+            My Work
+          </Link>
+          <Link
+            to="contact"
+            smooth={true}
+            duration={500}
+            offset={-60}
+            spy={true}
+            className="btn-outline btn-link"
+          >
+            Contact Me
+          </Link>
         </div>
       </div>
 

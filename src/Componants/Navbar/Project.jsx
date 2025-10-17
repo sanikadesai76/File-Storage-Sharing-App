@@ -1,27 +1,37 @@
 import "./Project.css";
+import { useEffect } from "react";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa"; // ← React GitHub Icon
 
 const projects = [
+  // 1) File Storage & Sharing App
   {
-    title: "Number Shifting Game",
+    title: "File Storage & Sharing App",
     description: [
-      "A console-based logic puzzle built using C++",
-      "Practices number manipulation and logical loops",
+      "Serverless web application for secure file upload and sharing",
+      "Built with AWS S3, Lambda, API Gateway, and Cognito",
+      "Features secure file storage with pre-signed URLs for downloads",
     ],
-    image: "number-shift.png",
-    tags: ["C++"],
-    github: "https://github.com/sanikadesai76/CPP-Project",
+    image:
+      "https://www.proofhub.com/articles/wp-content/uploads/2024/02/14-Best-File-Sharing-Apps-for-Businesses-in-2024.jpg",
+    tags: ["AWS S3", "AWS Lambda", "API Gateway", "AWS Cognito", "JavaScript"],
+    github: "https://github.com/sanikadesai76/File-Storage.git",
+    liveDemo: "https://your-live-demo-url.com",
   },
+
+  // 2) SHEild - Women Safety Application (new)
   {
-    title: "YouTube Clone",
+    title: "SHEild - Women Safety Application",
     description: [
-      "Frontend-only YouTube clone using HTML, CSS, & JavaScript",
-      "Responsive UI with homepage and video layout",
+      "One-stop safety app with SOS alerts and live location sharing",
+      "Quick contacts, guidance resources, and safety tips",
     ],
-    image: "youtube-clone.png",
-    tags: ["HTML", "CSS", "JavaScript"],
-    github: "https://github.com/sanikadesai76/Youtube-Clone",
+    image:
+      "https://media.licdn.com/dms/image/v2/D5612AQGiBF_1JX80vw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1696348536913?e=2147483647&v=beta&t=NKF7Fj-ODWy9gBJTxFcTWAeEwu96EZf6TrwiSITdFBY",
+    tags: ["React", "Firebase", "Maps"],
+    github: "https://github.com/sanikadesai76",
   },
+
+  // 3) Emotion Detection Web App
   {
     title: "Emotion Detection Web App",
     description: [
@@ -32,21 +42,67 @@ const projects = [
     tags: ["ReactJS", "Spring Boot", "Python"],
     github: "https://github.com/sanikadesai76/Hackthone_Team_Coders",
   },
+
+  // 4) Number Shifting Game
   {
-    title: "File Storage & Sharing App",
+    title: "Number Shifting Game",
     description: [
-      "Serverless web application for secure file upload and sharing",
-      "Built with AWS S3, Lambda, API Gateway, and Cognito",
-      "Features secure file storage with pre-signed URLs for downloads",
+      "A console-based logic puzzle built using C++",
+      "Practices number manipulation and logical loops",
     ],
-    image: "https://www.proofhub.com/articles/wp-content/uploads/2024/02/14-Best-File-Sharing-Apps-for-Businesses-in-2024.jpg",
-    tags: ["AWS S3", "AWS Lambda", "API Gateway", "AWS Cognito", "JavaScript"],
-    github: "https://github.com/sanikadesai76/File-Storage.git",
-    liveDemo: "https://your-live-demo-url.com", // Add your actual live demo URL here
+    image: "number-shift.png",
+    tags: ["C++"],
+    github: "https://github.com/sanikadesai76/CPP-Project",
+  },
+
+  // 5) YouTube Clone
+  {
+    title: "YouTube Clone",
+    description: [
+      "Frontend-only YouTube clone using HTML, CSS, & JavaScript",
+      "Responsive UI with homepage and video layout",
+    ],
+    image: "youtube-clone.png",
+    tags: ["HTML", "CSS", "JavaScript"],
+    github: "https://github.com/sanikadesai76/Youtube-Clone",
+  },
+
+  // 6) Web-Development (new)
+  {
+    title: "Web-Development",
+    description: [
+      "Collection of small web projects and experiments",
+      "Focus on responsive UI and modern CSS/JS patterns",
+    ],
+    image:
+      "https://www.nexel.in/media/blog_images/web_development_Z62jy4k.jpg",
+    tags: ["HTML", "CSS", "JavaScript"],
+    github: "https://github.com/sanikadesai76",
   },
 ];
 
 const Project = () => {
+  useEffect(() => {
+    const cards = Array.from(document.querySelectorAll(".project-card"));
+    if (!("IntersectionObserver" in window)) {
+      cards.forEach((el) => el.classList.add("reveal-in"));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-in");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    cards.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   const resolvePublicAsset = (assetPath) => {
     if (!assetPath) return import.meta.env.BASE_URL + "vite.svg";
     if (/^https?:\/\//i.test(assetPath)) return assetPath; // absolute URL
@@ -103,7 +159,13 @@ const Project = () => {
               className="project-image"
               onError={async (e) => {
                 const imgEl = e.currentTarget;
-                // First fallback: try SVG directly
+                // If project defines an explicit imageFallback URL, use it first
+                if (proj.imageFallback && !imgEl.dataset.triedFallback) {
+                  imgEl.dataset.triedFallback = "1";
+                  imgEl.src = resolvePublicAsset(proj.imageFallback);
+                  return;
+                }
+                // Next fallback: try bundled svg placeholder
                 if (!imgEl.dataset.triedSvg) {
                   imgEl.dataset.triedSvg = "1";
                   imgEl.src = resolvePublicAsset("file-storage.svg");
@@ -129,7 +191,7 @@ const Project = () => {
             </ul>
             <div className="project-tags">
               {proj.tags.map((tag, i) => (
-                <span key={i} className="tag">
+                <span key={i} className="tag" data-k={tag}>
                   {tag}
                 </span>
               ))}

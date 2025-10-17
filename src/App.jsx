@@ -4,8 +4,10 @@ import Home from "./Componants/Navbar/Home";
 import Nav from "./Componants/Navbar/Nav";
 import { Element } from "react-scroll";
 import Project from "./Componants/Navbar/Project";
-import Blog from "./Componants/Navbar/blog";
+import Blog from "./Componants/Navbar/Blog";
 import Achievement from "./Componants/Navbar/Achievement";
+import Contact from "./Componants/Navbar/Contact";
+import Footer from "./Componants/Navbar/Footer";
 
 function App() {
   return (
@@ -28,13 +30,19 @@ function App() {
         <Project />
       </Element>
 
-      <Element name="projects">
+      <Element name="blog">
         <Blog />
       </Element>
 
-      <Element name="projects">
+      <Element name="achievements">
         <Achievement />
       </Element>
+
+      <Element name="contact">
+        <Contact />
+      </Element>
+
+      <Footer />
     </>
   );
 }
