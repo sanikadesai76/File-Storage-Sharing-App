@@ -46,6 +46,7 @@ AWS Lambda	Serverless backend logic
 AWS API Gateway	REST API endpoints
 AWS Cognito (optional)	Authentication
 HTML / CSS / JavaScript	Frontend interface
+
 ⚙ Setup Instructions
 1. Clone the repository
 git clone https://github.com/<your-username>/file-storage-sharing-app.git
@@ -63,42 +64,6 @@ listFiles
 
 generateDownloadLink
 
-Create an API Gateway with routes:
-
-POST /upload
-
-GET /files
-
-GET /download
-
-(Optional) Integrate Cognito for authentication.
-
-3. Frontend Setup
-
-Edit the API endpoints in your frontend JavaScript file:
-
-const API_BASE_URL = "https://your-api-gateway-url.amazonaws.com/prod";
-
-4. Run the Project
-
-Open the index.html file in your browser or deploy it to any static hosting service like Netlify, Vercel, or AWS Amplify.
-
-📸 Screenshots (Optional)
-
-Add screenshots of your UI or AWS console setup here:
-
-/screenshots
- ┣ 📁 upload-page.png
- ┣ 📁 file-list.png
- ┗ 📁 s3-console.png
-
-🌐 Live Demo (Optional)
-
-You can host your frontend here and add your live demo link:
-👉 Live Demo
-
-🤝 Contributing
-
 Contributions are welcome!
 If you'd like to improve this project:
 
@@ -115,9 +80,3 @@ Submit a pull request 🚀
 👩‍💻 Sanika Desai
 📧 sddesai1603@gmail.com
 
-🌐 GitHub
- | LinkedIn
-
-🏁 Outcome
-
-A serverless, scalable, and secure file storage system built using AWS services — ideal for learning cloud computing and modern serverless architecture.
